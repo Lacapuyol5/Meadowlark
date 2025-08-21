@@ -3,6 +3,8 @@ var express = require('express');
 var app  = express();
  app.use(express.static(__dirname + '/public'));
 
+var fortune = require('./lib/fortune.js');
+
 // set up handlebars view engine
 const handlebars = require('express3-handlebars')
          .create({ defaultLayout: 'main'});
@@ -17,8 +19,7 @@ app.get('/', function(req, res){
 });
 
 app.get('/about', function(req, res){
-          var randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
-          res.render('about', { fortune:  randomFortune });
+          res.render('about', { fortune: fortune.getFortune()});
        
 });
 
@@ -37,14 +38,6 @@ res.render('500 - Server Error');
 
 });
 
-var fortunes = [
-"Conquer  your fears or they will conquer you.",
- "Rivers need springs.",
- "Do not fear what you don't know.",
- "You will have a pleasant surprise.",
- "Whenever possible, keep it simple."
- 
-];
 
 app.listen(app.get('port'), function(){
  console.log( 'Express started on http://localhost:' + app.get('port') + '; press ctrl-c to terminate.');
